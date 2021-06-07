@@ -5,6 +5,5 @@ Verificador proposicional, com cálculo de subformulas e complexidade. Disciplin
 gcc *.c -o main
 
 ## Executando
-./main
-
-
+./main (Dists. Linux)
+main.exe (SO Windows)
