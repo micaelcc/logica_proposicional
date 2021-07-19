@@ -25,6 +25,10 @@ void main(){
     exp_gama = NULL;
     subf = NULL;
 
+    int n_atoms = num_atoms(subf);
+    int num_lines = potencia(2, n_atoms);
+    int tam_subf = tam_list(subf);
+
     int **tabela_vdd;
 
 
@@ -43,37 +47,40 @@ void main(){
                     }
                     break;
                     
-                case 2:
-                    printf("Digite a formula: ");
-                    scanf(" %[^\n]", exp_B);
+            case 2:
+                printf("Digite a formula: ");
+                scanf(" %[^\n]", exp_B);
 
-                    if(verify(exp_B)) {
-                        subf = add(subf, exp_B);
-                        sub(exp_B);
-                    }else {
-                        printf("\nAVISO: Formula invalida!\n");
-                    }
-                    break;
-                case 3:
-                    print_list(subf);
-                    int n_atoms = num_atoms(subf);
-                    int num_lines = potencia(2, n_atoms);
-                    int tam_subf = tam_list(subf);
+                if(verify(exp_B)) {
+                    subf = add(subf, exp_B);
+                    sub(exp_B);
+                }else {
+                    printf("\nAVISO: Formula invalida!\n");
+                }
+                break;
+            case 3:
+                n_atoms = num_atoms(subf);
+                num_lines = potencia(2, n_atoms);
+                tam_subf = tam_list(subf);
+                att_complexidade(subf);
+                
+                printf("\nConjunto GAMA: ");
+                print_list(exp_gama);
+                printf("GAMA |= %s ?\n\n", exp_B);
 
-                    tabela_vdd = inicializar_tabela(subf, num_lines, tam_subf);
-                    tabela_imprime(tabela_vdd, num_lines, tam_subf);
-                    if(logical_consequence(tabela_vdd, num_lines, tam_subf, exp_gama, exp_B)){
-                        printf("\nGama |= B\n");
-                    }else{
-                            printf("\nGama nao |= B\n");
-                    }
-                    
-                    break;
-                case 0:
-                    return;
-                default: printf("Opcao invalida!\n"); break;
-            }
+                tabela_vdd = inicializar_tabela(subf, num_lines, tam_subf);
+                tabela_imprime(tabela_vdd, num_lines, tam_subf);
+                if(logical_consequence(tabela_vdd, num_lines, tam_subf, exp_gama, exp_B)){
+                    printf("\nGama |= B\n");
+                    printf("Portanto, %s e consequencia logica\n", exp_B);
+                }else{
+                    printf("\nGama nao |= B\n");
+                    printf("%s nao e consequencia logica\n", exp_B);
+                }
+                break;
+            case 0:
+                return;
+            default: printf("Opcao invalida!\n"); break;
         }
-    
- 
+    }
 }
