@@ -14,7 +14,7 @@ Lista* add(Lista* l, char *s){
         return l;
         
     Lista* no = (Lista*) malloc(sizeof(Lista));
-
+    no-> complexidade = 0;
     no->sub = malloc((strlen(s) + 1) * sizeof(char));
     strcpy(no->sub, s);
     //printf("\nNO -> SUB LINHA 88: %s\n", no -> sub);
@@ -29,7 +29,7 @@ void print_list(Lista *l){
     Lista* p;
 
     for(p = l; p != NULL; p=p->prox){
-        printf("=> %s \n", p->sub);
+        printf("=> %s\n", p->sub, p->complexidade);
     }
 
     printf("\n");
@@ -47,4 +47,14 @@ int busca(Lista* l, char *s){
     }
 
     return 0;
+}
+
+int tam_list(Lista * l){
+    Lista * p;
+
+    int tam = 0;
+
+    for(p = l; p != NULL; p = p->prox, tam++);
+
+    return tam;
 }

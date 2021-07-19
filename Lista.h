@@ -3,6 +3,7 @@
 
 struct list{
     char *sub;
+    int complexidade;
     struct list *prox;
 };
 
@@ -15,3 +16,5 @@ Lista* add(Lista*, char *);
 void print_list(Lista*);
 
 int busca(Lista*, char *);
+
+int tam_list(Lista *);

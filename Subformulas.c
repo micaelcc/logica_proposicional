@@ -103,13 +103,108 @@ void sub (char *exp){
         }
     }
 
-   //Chamar a recursão
-   complexidade ++;
+    //Chamar a recursão
+    complexidade ++;
 
-   if (!(strcmp(A,"")==0))
+    //printf("\nA = %s\nB = %s\n", A, B);
+    if (!(strcmp(A,"")==0))
        sub(A);
-   if(!(strcmp(B,"")==0))
+    if(!(strcmp(B,"")==0))
        sub(B);
+   
+}
+
+void separa_formula (char *exp, char *A_temp, char *B_temp, char *op){
+    int tam_exp = strlen(exp);
+
+    char *A = malloc(tam_exp*sizeof(char));
+    char *B = malloc(tam_exp*sizeof(char));
+    char *OP = malloc(tam_exp*sizeof(char));
+
+    A[0] = '\0';
+    B[0] = '\0';
+    OP[0] = '\0';
+
+
+    //Casos gerais (Quebrar a string) -(a&b)
+    if (exp[0] == '-'){
+        if (is_atom(exp[1])){
+            char *var_temp = char2str(exp[1]);
+
+            strcat(A,var_temp);
+
+            char *temp = part_of_str(exp, 3, tam_exp-1);
+            strcat(B, temp);
+
+        }
+        if (exp[1] == '('){
+            int posi = find_closing_parentheses(exp,1);
+
+            char *tempA = part_of_str(exp, 1, posi);
+            char *tempB = part_of_str(exp, posi+2, tam_exp-1);
+
+            strcat(A, tempA);
+            strcat(B, tempB);
+
+        }
+
+        char *var_tempOp = char2str(exp[0]);
+        strcat(OP, var_tempOp);
+    }
+    
+    if (exp[0] == '('){
+        if (exp[1] == '('){
+            int posi = find_closing_parentheses(exp,1);
+
+            char *tempA = part_of_str(exp, 1, posi);
+            char *tempB = part_of_str(exp, posi+2, tam_exp-2);
+
+            char *var_tempOp = char2str(exp[posi+1]);
+            strcat(OP, var_tempOp);
+            strcat(A, tempA);
+            strcat(B, tempB);
+        }
+        if (is_atom(exp[1])){
+            char *var_temp = char2str(exp[1]);
+            strcat(A,var_temp);
+
+            char *temp = part_of_str(exp, 3, tam_exp-2);
+            strcat(B, temp);
+
+            char *var_tempOp = char2str(exp[2]);
+            strcat(OP, var_tempOp);
+        }
+        if (exp[1] == '-'){
+            if (is_atom(exp[2])){
+                char *var_temp = part_of_str(exp, 1, 2);
+
+                strcat(A,var_temp);
+
+                char *temp = part_of_str(exp, 4, tam_exp-2);
+                
+                strcat(B, temp);
+
+                char *var_tempOp = char2str(exp[3]);
+                strcat(OP, var_tempOp);
+            }
+            if (exp[2] == '('){
+                int posi = find_closing_parentheses(exp,2);
+                
+                char *tempA = part_of_str(exp, 1, posi);
+                char *tempB = part_of_str(exp, posi+2, tam_exp-2);
+                //dest src
+                strcat(A, tempA);
+                strcat(B, tempB);
+
+                char *var_tempOp = char2str(exp[posi+1]);
+                strcat(OP, var_tempOp);
+            }
+        }
+    }
+
+    strcpy(A_temp, A);
+    strcpy(B_temp, B);
+    strcpy(op, OP);
    
 }
 
@@ -177,3 +272,88 @@ char * part_of_str(char *str, int init, int final){
 
     return part;
 }
+
+int num_atoms(Lista *l){
+    Lista *p;
+
+    int tam = 0;
+    for(p = l; p != NULL; p = p->prox){
+        if(strlen(p->sub) == 1)
+            tam++;
+    }
+
+    return tam;
+}
+
+int calcula_complexidade(char *subf){
+    int tam = 0;
+
+    int i;
+
+    for(i=0; subf[i] != '\0'; i++){
+        if(is_atom(subf[i]) || is_conector(subf[i]) || subf[i] == '-')
+            tam++;
+    }
+
+    return tam;
+}
+
+void att_complexidade(Lista * subf){
+    
+    Lista * p;
+
+    int i;
+
+    for(p = subf; p != NULL; p = p->prox){
+        int aux = calcula_complexidade(p->sub);
+        p->complexidade = aux;
+        
+    }
+
+}
+
+void bubble_sort(Lista * subf){
+    Lista * first;
+    Lista *second;
+
+    for(second = subf->prox; second != NULL; second = second->prox){
+        for(first = subf; first->prox != NULL; first= first->prox){
+            if(first->complexidade > first->prox->complexidade){
+                swap(first, first->prox);
+            }
+        }
+    }
+
+}
+
+void swap(Lista *node1, Lista *node2) {
+    Lista *aux = (Lista*)malloc(sizeof(Lista));
+    aux -> sub = (char*)malloc(sizeof(char*) * 1000);
+    aux -> prox = NULL;
+    aux -> complexidade = node1 -> complexidade;
+    strcpy(aux -> sub, node1 -> sub);
+    
+    node1 -> complexidade = node2 -> complexidade;
+    strcpy(node1 -> sub, node2 -> sub);
+
+    node2 -> complexidade = aux -> complexidade;
+    strcpy(node2 -> sub, aux -> sub);
+}
+
+/*
+V2
+void swap(Lista *node1, Lista *node2) {
+    Lista aux;//*aux = (Lista*)malloc(sizeof(Lista));
+    aux.sub = (char*)malloc(sizeof(char*) * 1000);
+    aux.prox = NULL;
+    aux.complexidade = node1 -> complexidade;
+    strcpy(aux.sub, node1 -> sub);
+    
+    node1 -> complexidade = node2 -> complexidade;
+    strcpy(node1 -> sub, node2 -> sub);
+
+    node2 -> complexidade = aux.complexidade;
+    strcpy(node2 -> sub, aux.sub);
+}
+}
+*/

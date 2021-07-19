@@ -193,6 +193,7 @@ int count_parentesis(char *exp){
 //Função que retorna o número de atomos em uma
 //expressão. Atomos = {'a' .. 'z'}
 int count_atoms(char *exp){
+
     int num_atoms = 0;
     int tam_exp = strlen(exp);
 
