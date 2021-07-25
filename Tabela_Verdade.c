@@ -140,7 +140,6 @@ void exp_classification(int **tabela, int rows, int columns) {
             isFalseble++;
         }
     }
-    printf("\nI = %d | Taut = %d\n", i, isTautology);
     if(isTautology > 0 && isTautology < i)
         printf("Satisfazivel.\n");
     
