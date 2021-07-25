@@ -140,17 +140,17 @@ void exp_classification(int **tabela, int rows, int columns) {
             isFalseble++;
         }
     }
-    
-    if(isTautology > 0 && isTautology < i-1)
+    printf("\nI = %d | Taut = %d\n", i, isTautology);
+    if(isTautology > 0 && isTautology < i)
         printf("Satisfazivel.\n");
     
-    else if(isTautology == i-1)
+    else if(isTautology == i)
         printf("Valida | Satisfazivel\n");
     
-    if(isFalseble > 0 && isFalseble < i-1)
+    if(isFalseble > 0 && isFalseble < i)
         printf("Falsificavel.\n");
     
-    else if(isFalseble == i-1)
+    else if(isFalseble == i)
         printf("Insatisfazivel | falsificavel\n");
 }
 

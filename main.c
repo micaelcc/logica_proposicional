@@ -44,6 +44,8 @@ void main(){
                 printf("\n::::    Tabela Verdade    ::::\n");
                 tabela_vdd = inicializar_tabela(subf, num_lines, tam_subf);
                 tabela_imprime(tabela_vdd, num_lines, tam_subf);
+                printf("\nClassificacao da formula: ");
+                exp_classification(tabela_vdd, num_lines, tam_subf);
                 free_list(subf);
                 subf = NULL;
             }else {
