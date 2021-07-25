@@ -1,5 +1,5 @@
-# verificador_proposicional
-Verificador proposicional, com cálculo de subformulas e complexidade. Disciplina de Lógica para Computação.
+# verificador_proposicional e tabela verdade
+Verificador proposicional, com cálculo de subformulas e complexidade. Calcula a consequencia lógica dado um gama e uma fórmula A, e também verifica a  satisfatibilidade e validade em uma Tabela Verdade. Disciplina de Lógica para Computação.
 
 ## Compilando (Windows/Linux) com GCC:
 gcc *.c -o main
