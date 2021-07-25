@@ -7,6 +7,7 @@
 
 //Tornando o ponteiro subf "visivel" para todo o codigo
 extern Lista *subf;
+int complexidade = 0;
 
 /*
 * Função que recebe uma tabela, numero de linhas e colunas e
