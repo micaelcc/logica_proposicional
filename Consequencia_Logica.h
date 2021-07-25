@@ -1,1 +1,2 @@
-int logical_consequence(int **tabela, int rows, int columns, Lista *gama, char *B);
+//Assinatura das funções de Consequencia Logica
+int logical_consequence(int **, int , int , Lista *, char *);

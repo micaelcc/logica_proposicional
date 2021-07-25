@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "menu.h"
 
+//Menu da etapa 2
 int menu_2(){
     puts("\n\n\n::::    Consequencia Logica    ::::\n");
     puts("[1] Adicionar formula para Gama");
@@ -15,6 +16,7 @@ int menu_2(){
     return op;
 }
 
+//Função de menu principal
 int menu_principal(){
     puts("\n\n\n::::    Menu Principal    ::::\n");
     puts("[1] Tabela Verdade");

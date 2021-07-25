@@ -49,6 +49,9 @@ int busca(Lista* l, char *s){
     return 0;
 }
 
+/*
+    Função que retorna o tamanho de uma lista
+*/
 int tam_list(Lista * l){
     Lista * p;
 
@@ -58,6 +61,10 @@ int tam_list(Lista * l){
 
     return tam;
 }
+
+/*
+    Função que limpa uma lista
+*/
 
 void free_list(Lista *node) {
     Lista *aux;

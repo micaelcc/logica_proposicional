@@ -19,4 +19,4 @@ int busca(Lista*, char *);
 
 int tam_list(Lista *);
 
-void free_list(Lista *node);
+void free_list(Lista *);

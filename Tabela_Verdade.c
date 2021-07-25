@@ -5,9 +5,14 @@
 #include "Tabela_Verdade.h"
 #include "Subformulas.h"
 
-int complexidade = 0;
+//Tornando o ponteiro subf "visivel" para todo o codigo
 extern Lista *subf;
 
+/*
+* Função que recebe uma tabela, numero de linhas e colunas e
+* preenche a parte inicial da tabela verdade, que corresponde
+* aos atomos.
+*/
 void tabela_preenche_atoms(int **tabela, int rows, int columns){
     int i,j;
 
@@ -33,6 +38,11 @@ void tabela_preenche_atoms(int **tabela, int rows, int columns){
 
 }
 
+
+/*
+* Função que recebe uma tabela, numero de linhas e colunas e
+* imprime na tela, juntamente as subformulas em ordem de complexidade.
+*/
 void tabela_imprime(int **tabela, int rows, int columns){
     int i,j;
 
@@ -65,6 +75,10 @@ void tabela_imprime(int **tabela, int rows, int columns){
         }
 }
 
+/*
+* Função que recebe uma string (subformula), e retorna
+* a coluna daquela subformula.
+*/
 int busca_pos_sub(char *str){
     Lista *p;
     int i;
@@ -78,12 +92,17 @@ int busca_pos_sub(char *str){
     return -1;
 }
 
+/*
+* Função que resolve a tabela verdade. 
+*/
+
 void tabela_resolve(int **tabela, int rows, int columns){
     int i,j;
 
     Lista *aux;
     Lista *p;
 
+    //Atribui a "tam_atoms" o numero de atomos
     int tam_atoms = num_atoms(subf);
 
 
@@ -92,12 +111,13 @@ void tabela_resolve(int **tabela, int rows, int columns){
             p=p->prox;
     }
 
-    
-    //(((p > q) & r) # s)
+    //Ponteiros auxiliares A, B, e op    
     char *A, *B, *op;
 
     //passa por cada coluna
     for(j = num_atoms(subf); j < columns; p=p->prox, j++){
+        //Se a subformula daquela coluna nao for um atomo sozinho
+        //separa a formula em <A> <op> <B>
         if(strlen(p->sub) > 1){
             
             A = malloc(sizeof(char) * (strlen(p->sub)+1));
@@ -107,18 +127,27 @@ void tabela_resolve(int **tabela, int rows, int columns){
             separa_formula(p->sub, A, B, op); 
         }
         
+        //Posicões das subformulas A e B
         int pos_A = busca_pos_sub(A);
         
+        //
         int pos_B = busca_pos_sub(B);
 
+        //Passa por cada linha da tabela
         for(i = 0; i < rows; i++){
+            //Pega o valor logico de A
             int value_A = tabela[i][pos_A];
             int value_B = -1;
 
+            //Se B existe na tabela, entao pega seu valor logico
             if(pos_B != -1)
                 value_B = tabela[i][pos_B];
 
+            //Atribui o operador a variavel "op_char"
             char op_char = op[0];
+
+            //Switch case para, com base no operador, resolver cada operação
+            //utilizando a logica da linguagem C
             switch(op_char){
                 case '&': tabela[i][j] = value_A & value_B; break;
                 case '#': tabela[i][j] = value_A || value_B; break;
@@ -129,6 +158,11 @@ void tabela_resolve(int **tabela, int rows, int columns){
     }
 }
 
+/*
+* Função que classifica a tabela. Recebe a tabela
+* ja resolvida, e mostra qual é a classificação com
+* base no número de 1's ou 0's na coluna final.
+*/
 void exp_classification(int **tabela, int rows, int columns) {
     int i;
     int isTautology = 0, isFalseble = 0;
@@ -153,6 +187,7 @@ void exp_classification(int **tabela, int rows, int columns) {
         printf("Insatisfazivel | falsificavel\n");
 }
 
+//Funcao simples para calcular potencia
 int potencia(int base, int exp){
     int i;
 
@@ -167,24 +202,36 @@ int potencia(int base, int exp){
     return mult;
 }
 
+/*
+* Função que inicializa a tabela, alocando
+* dinamicamente a matriz e chamando as funções
+* que resolvem a tabela.
+*/
 int **inicializar_tabela(Lista *subf, int rows, int columns) {
+    //Ordena a lista com base na complexidade
     bubble_sort(subf);
 
+    //Alocando cada linha da tabela
     int **tabela_vdd = malloc(sizeof(int*) * rows);
+
     int i,j;
 
+    //Alocando as colunas de cada linha da tabela
     for(i=0; i < rows; i++){
         tabela_vdd[i] = malloc(sizeof(int) * columns);
     }
     
+    //Definindo toda a matriz com 0's
     for(i=0; i<rows; i++)
         for(j = 0; j<columns; j++)
             tabela_vdd[i][j] = 0;
         
+    //Chama a função para preencher a parte dos atomos
     tabela_preenche_atoms(tabela_vdd, rows, columns);
 
+    //Chama a função para resolver a tabela
     tabela_resolve(tabela_vdd, rows, columns);
 
-
+    //Retorna ponteiro para a matriz
     return tabela_vdd;
 }

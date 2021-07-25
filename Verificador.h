@@ -6,7 +6,7 @@ int is_conector(char);
 
 void remove_spaces(char *);
 
-int par_verify_open_close(char* str);
+int par_verify_open_close(char* );
 
 int count_binary_conn(char *);
 

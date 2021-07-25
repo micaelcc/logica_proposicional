@@ -13,11 +13,12 @@
 Lista *subf;
 Lista *exp_gama;
 
-extern int complexidade;
 
 void main(){
+    //Ponteiros para formula e exp_A
     char *formula = malloc(sizeof(char) * LENGTH);
     char *exp_A = malloc(sizeof(char) * LENGTH);
+
     exp_gama = NULL;
     subf = NULL;
 
@@ -26,7 +27,10 @@ void main(){
     int tam_subf;
 
     int **tabela_vdd;
+
+    //Chama o menu principal, e obtem uma opção
     int op = menu_principal();
+
     if(op == 1) {
         while(1) {
             printf("\nDigite a formula: ");
