@@ -8,13 +8,13 @@
 extern Lista * exp_gama;
 
 /*
-* Recebe um conjunto de formulas GAMA e uma formula B, e diz se 
-* a fórmula B é ou não consequencia lógica
+* Recebe um conjunto de formulas GAMA e uma formula A, e diz se 
+* a fórmula A é ou não consequencia lógica
 */
-int logical_consequence(int **tabela, int rows, int columns, Lista *gama, char *B) {
+int logical_consequence(int **tabela, int rows, int columns, Lista *gama, char *A) {
     int tam = tam_list(gama); // quantidade de formulas do gama
     int *gama_positions = (int*)malloc(sizeof(int) * tam); //vetor para as colunas do gama na tabela
-    int B_position = busca_pos_sub(B); // Coluna da formula B na tabela
+    int A_position = busca_pos_sub(A); // Coluna da formula A na tabela
     int i, j;
     
     //Vetor que armazena o numero das linhas onde as formulas do conjunto gama são simultaneamente satisfeitas
@@ -46,10 +46,10 @@ int logical_consequence(int **tabela, int rows, int columns, Lista *gama, char *
 
     int cont = 0;
     for(i = 0; i < aux; i++) {
-        if(tabela[lines[i]][B_position] == 0) {
+        if(tabela[lines[i]][A_position] == 0) {
             return 0; // Retorna 0 quando não é consequencia logica
         }
     }
     
-    return 1; // Retorna 1 quando B é consequencia
+    return 1; // Retorna 1 quando A é consequencia
 }

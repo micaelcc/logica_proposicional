@@ -18,3 +18,5 @@ void print_list(Lista*);
 int busca(Lista*, char *);
 
 int tam_list(Lista *);
+
+void free_list(Lista *node);

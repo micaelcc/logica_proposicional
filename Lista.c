@@ -29,7 +29,7 @@ void print_list(Lista *l){
     Lista* p;
 
     for(p = l; p != NULL; p=p->prox){
-        printf("=> %s\n", p->sub, p->complexidade);
+        printf("=> %s \n", p->sub);
     }
 
     printf("\n");
@@ -57,4 +57,13 @@ int tam_list(Lista * l){
     for(p = l; p != NULL; p = p->prox, tam++);
 
     return tam;
+}
+
+void free_list(Lista *node) {
+    Lista *aux;
+    while (node != NULL) {
+        aux = node;
+        node = node -> prox;
+        free(aux);
+    }
 }

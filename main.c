@@ -10,30 +10,49 @@
 
 #define LENGTH 1000 
 
-
 Lista *subf;
 Lista *exp_gama;
 
 extern int complexidade;
 
-
-
-
 void main(){
     char *formula = malloc(sizeof(char) * LENGTH);
-    char *exp_B = malloc(sizeof(char) * LENGTH);
+    char *exp_A = malloc(sizeof(char) * LENGTH);
     exp_gama = NULL;
     subf = NULL;
 
-    int n_atoms = num_atoms(subf);
-    int num_lines = potencia(2, n_atoms);
-    int tam_subf = tam_list(subf);
+    int n_atoms;
+    int num_lines;
+    int tam_subf;
 
     int **tabela_vdd;
+    int op = menu_principal();
+    if(op == 1) {
+        while(1) {
+            printf("\nDigite a formula: ");
+            scanf(" %[^\n]", formula);
 
+            if(verify(formula)) {
+                sub(formula);
+                att_complexidade(subf);
+                bubble_sort(subf);
 
-    while(1){
-        int op = menu_etapa_2();
+                n_atoms = num_atoms(subf);
+                num_lines = potencia(2, n_atoms);
+                tam_subf = tam_list(subf);
+
+                printf("\n::::    Tabela Verdade    ::::\n");
+                tabela_vdd = inicializar_tabela(subf, num_lines, tam_subf);
+                tabela_imprime(tabela_vdd, num_lines, tam_subf);
+                free_list(subf);
+                subf = NULL;
+            }else {
+                printf("\n\n**** AVISO: Formula Invalida! ****\n\n");
+            }
+        }
+    }else if(op == 2) {
+        while(1){
+        op = menu_2();
         switch(op){
             case 1: 
                 printf("Digite uma formula para o conjunto GAMA: ");
@@ -48,14 +67,14 @@ void main(){
                     break;
                     
             case 2:
-                printf("Digite a formula: ");
-                scanf(" %[^\n]", exp_B);
+                printf("Digite a formula A: ");
+                scanf(" %[^\n]", exp_A);
 
-                if(verify(exp_B)) {
-                    subf = add(subf, exp_B);
-                    sub(exp_B);
+                if(verify(exp_A)) {
+                    subf = add(subf, exp_A);
+                    sub(exp_A);
                 }else {
-                    printf("\nAVISO: Formula invalida!\n");
+                    printf("\n\n**** AVISO: Formula invalida! ****\n\n");
                 }
                 break;
             case 3:
@@ -66,21 +85,26 @@ void main(){
                 
                 printf("\nConjunto GAMA: ");
                 print_list(exp_gama);
-                printf("GAMA |= %s ?\n\n", exp_B);
+                printf("GAMA |= %s ?\n\n", exp_A);
 
                 tabela_vdd = inicializar_tabela(subf, num_lines, tam_subf);
                 tabela_imprime(tabela_vdd, num_lines, tam_subf);
-                if(logical_consequence(tabela_vdd, num_lines, tam_subf, exp_gama, exp_B)){
-                    printf("\nGama |= B\n");
-                    printf("Portanto, %s e consequencia logica\n", exp_B);
+                if(logical_consequence(tabela_vdd, num_lines, tam_subf, exp_gama, exp_A)){
+                    printf("\nGama |= A\n");
+                    printf("Portanto, %s e consequencia logica\n", exp_A);
                 }else{
-                    printf("\nGama nao |= B\n");
-                    printf("%s nao e consequencia logica\n", exp_B);
+                    printf("\nGama nao |= A\n");
+                    printf("%s nao e consequencia logica\n", exp_A);
                 }
+                free_list(exp_gama);
+                free_list(subf);
+                exp_gama = NULL;
+                subf = NULL;
                 break;
             case 0:
                 return;
             default: printf("Opcao invalida!\n"); break;
+            }
         }
     }
 }
